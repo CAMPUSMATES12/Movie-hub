@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MovieHub</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --text: #ffffff;
+      --accent: #03dac6;
+      --card: #1e1e1e;
+    }
+
+    body.light {
+      --bg: #f2f2f2;
+      --text: #121212;
+      --card: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .toggle-btn {
+      cursor: pointer;
+      font-size: 20px;
+      background: none;
+      border: none;
+      color: var(--accent);
+    }
+
+    .search-bar {
+      padding: 10px 20px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 20px;
+    }
+
+    .categories button {
+      background-color: var(--card);
+      color: var(--text);
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .categories button:hover {
+      background-color: var(--accent);
+      color: var(--bg);
+    }
+
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .movie-card {
+      background-color: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      padding-bottom: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .movie-card:hover {
+      transform: scale(1.03);
+    }
+
+    .movie-card img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+    }
+
+    .movie-card h3 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+
+    .movie-card a {
+      text-decoration: none;
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    .movie-card a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">🎬 MovieHub</div>
+    <button class="toggle-btn" onclick="toggleMode()" title="Toggle Light/Dark Mode">🌙</button>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Search for a movie..." id="searchInput" onkeyup="searchMovies()">
+  </div>
+
+  <div class="categories">
+    <button onclick="filterCategory('all')">All</button>
+    <button onclick="filterCategory('action')">Action</button>
+    <button onclick="filterCategory('drama')">Drama</button>
+    <button onclick="filterCategory('tv')">TV Series</button>
+    <button onclick="filterCategory('horror')">Horror</button>
+    <button onclick="filterCategory('comedy')">Comedy</button>
+  </div>
+
+  <div class="movie-grid" id="movieGrid">
+    <!-- Example Movie -->
+    <div class="movie-card" data-category="tv">
+      <img src="https://via.placeholder.com/300x400?text=Beyond+The+Gates" alt="Beyond The Gates">
+      <h3>Beyond The Gates</h3>
+      <a href="movie.html?id=beyond-the-gates">View Details</a>
+    </div>
+
+    <div class="movie-card" data-category="action">
+      <img src="https://via.placeholder.com/300x400?text=John+Wick+4" alt="John Wick 4">
+      <h3>John Wick 4</h3>
+      <a href="movie.html?id=john-wick-4">View Details</a>
+    </div>
+
+    <div class="movie-card" data-category="comedy">
+      <img src="https://via.placeholder.com/300x400?text=The+Office+S1" alt="The Office S1">
+      <h3>The Office S1</h3>
+      <a href="movie.html?id=the-office-s1">View Details</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle("light");
+      const btn = document.querySelector(".toggle-btn");
+      btn.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+    }
+
+    function filterCategory(category) {
+      const cards = document.querySelectorAll(".movie-card");
+      cards.forEach(card => {
+        if (category === "all" || card.dataset.category === category) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    function searchMovies() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const cards = document.querySelectorAll(".movie-card");
+
+      cards.forEach(card => {
+        const title = card.querySelector("h3").innerText.toLowerCase();
+        if (title.includes(input)) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
